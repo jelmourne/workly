@@ -1,0 +1,21 @@
+{% extends "templatelogin.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="custom-login center" style="color:#4C4E52;height: 175px!important;">
+    <label class="font">Account</label>
+    <ul class="list-group">
+        <button type="button" class="button-small text-center font" style="color:#4C4E52;" onclick="window.location.href='{{ url_for('resetemail') }}';">
+          Reset email
+        </button>
+        <br>
+        <button type="button" class="button-small text-center font" style="color:#4C4E52;" onclick="window.location.href='{{ url_for('resetpass') }}';">
+          Reset password
+        </button>
+    </ul>
+</div>
+{% endblock %}

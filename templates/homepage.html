@@ -1,0 +1,31 @@
+{% if admin == None %}
+  {% extends "template.html" %}
+{% elif admin >=  0 %}
+  {% extends "templateadmin.html" %}
+{% endif %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div style="padding-top: 75px; text-align: center;">
+    <button class="button-large center" onclick="window.location.href='{{ url_for('start') }}';">Start</button>
+    <button class="button-large center" onclick="window.location.href='{{ url_for('end') }}';">End</button>
+    <button class="button-large center" onclick="window.location.href='{{ url_for('breaks') }}';">Break</button>
+    <button class="button-large center" onclick="window.location.href='{{ url_for('details') }}';">Details</button>
+</div>
+{% endblock %}

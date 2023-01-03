@@ -1,0 +1,56 @@
+{% if admin == None %}
+  {% extends "template.html" %}
+{% elif admin >=  0 %}
+  {% extends "templateadmin.html" %}
+{% endif %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<br>
+<div class="custom-submit center" style="font-size: 16px;">
+    <form action="/change/employer" method="post">
+        <table class="table-hover table">
+            <thead>
+                <tr class="navbar-custom">
+                    <th colspan="2" class="font text-white font-weight-bold" style="text-align:center;">Change employer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employ in employer %}
+                <tr>
+                    <td>
+                        <input type="radio" name="employ" value={{(employ[0])}}>
+                    </td>
+                    <td class="font" style="color:#4C4E52; text-align:center;">{{employ[1]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary float-right font">Change</button>
+                    </td>
+                </tr>      
+            </tfoot>
+        </table>              
+    </form>
+</div>
+
+{% endblock %}

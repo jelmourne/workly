@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.13.1/datatables.min.css"/>
+    
+    <link rel="icon" href="/static/logo_small.ico">
+    <link rel="stylesheet" href="/static/stylesheet.css">
+
+    <title>Workly</title>
+    {% block head %}
+    {% endblock %}
+</head>
+<body style="background-color: #EEEEEE">
+    <nav class="navbar navbar-dark navbar-custom">
+        <div class="collapse navbar-collapse w-100 order-1 order-lg-0" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="btn text-white btn-floating m-1 me-3 font" href="{{ url_for('index') }}" style="font-size: 24px" role="button">
+                        <i class="bi-house" style="font-size: 24px;"></i>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="btn text-white btn-floating m-1 me-3 font" style="font-size: 24px" href="{{ url_for('settings') }}" role="button">
+                        <i class="bi-gear" style="font-size: 24px;"></i>
+                        Settings
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="btn text-white btn-floating m-1 me-3 font" style="font-size: 24px" href="{{ url_for('admin') }}" role="button">
+                        <i class="bi bi-pencil-square" style="font-size: 24px;"></i>
+                        Admin
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="btn btn-floating m-1 me-3 font" style="color:#b23b3b; font-size: 24px" href="{{ url_for('logout') }}" role="button">
+                        <i class="bi-box-arrow-left" style="font-size: 24px; color:#b23b3b;"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex w-100 order-0">
+            <div class="w-100">
+                <button class="navbar-toggler custom-toggler border-0 btn:focus" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <a class="navbar-brand text-center" href="{{ url_for('index') }}">
+                <img src="/static/logo_large.png" alt="Bootstrap" width="150" height="40">
+            </a>
+            <span class="w-100"></span>
+        </div>
+        <span class="w-100"></span>
+    </nav> 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.13.1/datatables.min.js"></script> 
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

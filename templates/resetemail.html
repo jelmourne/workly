@@ -1,0 +1,56 @@
+{% if admin == None and logged >= 0 %}
+  {% extends "template.html" %}
+{% elif admin >= 0 %}
+  {% extends "templateadmin.html" %}
+{% elif logged == None %}
+  {% extends "templatelogin.html" %}
+{% endif %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<br>
+<form action="/reset/email" method="post" class="custom-login center font" style="height: 330px!important;">
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email" onchange='check_password()'>
+    <br>
+    <input type="email" class="form-control" id="confirm_email" aria-describedby="emailHelp" placeholder="Confirm email" onchange='check_password()'>
+  </div>
+  <br>
+  <div>
+    <a href="{{ url_for('login') }}"> Login </a>
+    <button type="submit" id="submit" class="btn btn-primary float-right">Reset</button>
+  </div>
+</form>
+<script>
+  function check_password() {
+    if (document.getElementById('exampleInputEmail1').value ==
+            document.getElementById('confirm_email').value) {
+        document.getElementById('submit').disabled = false;
+    } else {
+        document.getElementById('submit').disabled = true;
+    }
+}
+</script>
+
+{% endblock %}

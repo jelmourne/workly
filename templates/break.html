@@ -1,0 +1,32 @@
+{% if admin == None %}
+  {% extends "template.html" %}
+{% elif admin >=  0 %}
+  {% extends "templateadmin.html" %}
+{% endif %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div style="padding-top: 75px; text-align: center;">
+    <form action="/break" method="post">
+        <button type="submit" class="button-large center" name="break" value="15" onClick="window.location.reload();">15m</button>
+        <button type="submit" class="button-large center" name="break" value="30" onClick="window.location.reload();">30m</button>
+        <button type="submit" class="button-large center" name="break" value="60" onClick="window.location.reload();">60m</button>
+    </form> 
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "templateadmin.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<br>
+<div class="custom-submit center" style="font-size: 16px;">
+    <form action="/admin" method="post">
+        <input class="form-control font" type="text" placeholder="Location" name="location">
+        <input type="submit" style="display: none;">
+    </form>
+    <br>
+    <table class="table-hover table table-wrapper-scroll-y">
+        <thead>
+            <tr class="navbar-custom">
+                <th colspan="2" class="font text-white font-weight-bold" style="text-align:center;">Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+            <tr>
+                <td class="font" style="color:#4C4E52; text-align:center;">{{location[1]}}</td>
+                <td>      
+                    <form action="{{ url_for('delete') }}" method="POST">
+                        <input type="hidden" name="table" value="locations">
+                        <input type="hidden" value={{(location[0])}} name="id">
+                        <button type="submit" style="border:0;background:none;">
+                            <i class="bi bi-x-lg" style="color:#b23b3b;"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+      $('#data').DataTable({
+        "bAutoWidth": false,
+        columns: [
+        {orderable: false, searchable: false}],
+      });
+    });
+</script>
+{% endblock %}

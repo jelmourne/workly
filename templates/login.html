@@ -1,0 +1,45 @@
+{% extends "templatelogin.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<br>
+<form action="/login" method="post" class="custom-login center font">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember" value="true">
+      <label class="form-check-label" for="exampleCheck1">Remember me</label>
+    </div>
+    <div>
+      <a href="{{ url_for('reset')}}">Forgot login?</a>
+    </div>
+    <br>
+    <div>
+      <a href="{{ url_for('register') }}"> Register </a>
+      <button type="submit" class="btn btn-primary float-right">Login</button>
+    </div>
+  </form>
+{% endblock %}
+

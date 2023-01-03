@@ -1,0 +1,38 @@
+{% if admin == None %}
+  {% extends "template.html" %}
+{% elif admin >=  0 %}
+  {% extends "templateadmin.html" %}
+{% endif %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="custom-login center" style="font-size: 16px;padding-bottom: 5px!important;">
+    <form action="/report" method="post">
+        <table class="table">
+            <thead>
+                <tr class="navbar-custom font">
+                    <th scope="col" colspan="2" class="font text-white font-weight-bold" style="text-align:center;">Report issue</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">                 
+                        <textarea rows="8" col="2" class="form-control font" type="text" placeholder="Description" name="description"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td> 
+                        <button type="submit" class="btn btn-primary float-right font">Send</button>
+                    </td>
+                </tr>      
+            </tfoot>
+        </table>              
+    </form>
+{% endblock %}

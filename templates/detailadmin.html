@@ -1,0 +1,127 @@
+{% extends "templateadmin.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<br>
+<div class="custom-table center">
+  <table id="data" class="table-hover table">
+      <thead>
+        <tr class="navbar-custom">
+          <th scope="col" class="font text-white font-weight-bold">Name</th>
+          <th scope="col" class="font text-white font-weight-bold">Loc</th>
+          <th scope="col" class="font text-white font-weight-bold">Date</th>
+          <th scope="col" class="font text-white font-weight-bold">Desc</th>
+          <th scope="col" class="font text-white font-weight-bold">Start</th>
+          <th scope="col" class="font text-white font-weight-bold">End</th>
+          <th scope="col" class="font text-white font-weight-bold">Hours</th>
+          <th scope="col" class="font text-white font-weight-bold" style="padding-left:0;padding-right:0;">
+            <button type="submit" class="font text-white font-weight-bold" 
+            style="background-color: #b23b3b;;color:#b23b3b;border: 0px;border-radius:5px" data-toggle="modal" data-target="#exampleModal">Clear all</button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for hour in hours %}
+        <tr>
+          <th scope="row font" class="font font-weight-bold" style="color:#4C4E52;">{{ hour[2] }}</th>
+          <td class="font" style="color:#4C4E52;">{{ hour[3] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[5] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[4] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[6] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[7] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[8] }}</td>
+          <td>
+            <form action="{{ url_for('delete') }}" method="POST">
+              <input type="hidden" name="table" value="hours">
+              <input type="hidden" value={{(hour[0])}} name="id">
+              <button type="submit" style="border:0;background:none;">
+                  <i class="bi bi-x-lg" style="color:#b23b3b;"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 20px!important">
+      <div class="modal-header">
+        <h5 class="modal-title font" id="exampleModalLabel" style="color: #4C4E52;">Clear table</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body font" style="color: #4C4E52;">
+        Are you sure you want to clear all table rows?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form action="/delete/table" method="post">
+          <button type="submit" class="btn btn-danger">Clear all</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.bootstrap4.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script> 
+
+<script>
+    $(document).ready(function () {
+      var table = $('#data').DataTable({
+        bAutoWidth: false,
+        lengthChange: false,
+        buttons: [
+        {extend: "excel", 
+        exportOptions: {columns: [ 0, 1, 2, 3, 4, 5, 6 ]},
+        className: "custom-export"},
+        {extend: "pdf", 
+        exportOptions: {columns: [ 0, 1, 2, 3, 4, 5, 6 ]},
+        className: "custom-export"},
+        {extend: "print", 
+        exportOptions: {columns: [ 0, 1, 2, 3, 4, 5, 6 ]},
+        className: "custom-export"}],
+        columns: [
+          null,
+          {searchable: false},        
+          {searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false}],
+      });
+
+      table.buttons().container()
+        .appendTo( '#data_wrapper .col-md-6:eq(0)' );
+
+    }); 
+</script>
+{% endblock %}
