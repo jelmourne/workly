@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, session, url_for, flash
 from flask_mail import Mail, Message
 from flask_session import Session
-
+from os import environ
 from datetime import datetime, timedelta
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -10,7 +10,7 @@ from functools import wraps
 app = Flask(__name__, template_folder='templates')
 
 #configure session
-app.config['SECRET_KEY'] = '3032FC23ECworkly'
+app.config['SECRET_KEY'] = environ.get("SECRET")
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_PERMANENT'] = False
 Session(app)
@@ -21,15 +21,19 @@ app.config.update(dict(
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
     MAIL_SUPPRESS_SEND = False,
-    MAIL_USERNAME = 'jelmourne@outlook.com',
-    MAIL_PASSWORD = 'Bruce-12'
+    MAIL_USERNAME = environ.get("EMAIL"),
+    MAIL_PASSWORD = environ.get("PASSWORD"),
+    MAIL_DEFAULT_SENDER = ('Workly', environ.get("EMAIL"))
 ))
 mail = Mail(app)
+
+print(environ)
 
 #configure data base
 db = sqlite3.connect('workly.db', check_same_thread=False)
 cursor = db.cursor()
 
+print(environ.get('EMAIL'))
 #functions
 def login_required(f):
     @wraps(f)
@@ -464,7 +468,7 @@ def changeemployer():
 def report():
     if request.method == "POST":
 
-        msg = Message('Bug report', sender = 'jelmourne@outlook.com', recipients = ['jelmourne@outlook.com'])
+        msg = Message('Bug report', recipients = ['jelmourne@outlook.com'])
         msg.body = request.form.get("description")
         mail.send(msg)
 
