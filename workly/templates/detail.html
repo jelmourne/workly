@@ -1,0 +1,90 @@
+{% extends "template.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show text-center font" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<br>
+<div class="custom-table center">
+  <table id="data" class="table-hover table">
+      <thead>
+        <tr class="navbar-custom">
+          <th scope="col" class="font text-white font-weight-bold">Name</th>
+          <th scope="col" class="font text-white font-weight-bold">Loc</th>
+          <th scope="col" class="font text-white font-weight-bold">Date</th>
+          <th scope="col" class="font text-white font-weight-bold">Start</th>
+          <th scope="col" class="font text-white font-weight-bold">End</th>
+          <th scope="col" class="font text-white font-weight-bold">Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for hour in hours %}
+        <tr>
+          <th scope="row font" class="font font-weight-bold" style="color:#4C4E52;">{{ hour[2] }}</th>
+          <td class="font" style="color:#4C4E52;">{{ hour[3] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[5] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[6] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[7] }}</td>
+          <td class="font" style="color:#4C4E52;">{{ hour[8] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.bootstrap4.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script> 
+
+<script>
+    $(document).ready(function () {
+      var table = $('#data').DataTable({
+        bAutoWidth: false,
+        bFilter: false,
+        lengthChange: false,
+        buttons: [
+        {extend: "excel", 
+        exportOptions: {columns: [ 0, 1, 2, 3, 4 ]},
+        className: "custom-export"},
+        {extend: "pdf", 
+        exportOptions: {columns: [ 0, 1, 2, 3, 4 ]},
+        className: "custom-export"},
+        {extend: "print", 
+        exportOptions: {columns: [ 0, 1, 2, 3, 4 ]},
+        className: "custom-export"}],
+        columns: [
+          {searchable: false},
+          {searchable: false},        
+          {searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false}],
+      });
+
+      table.buttons().container()
+        .appendTo( '#data_wrapper .col-md-6:eq(0)' );
+
+    }); 
+</script>
+{% endblock %}

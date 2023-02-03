@@ -6,8 +6,9 @@ from datetime import datetime, timedelta
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
+from workly.config import Config
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, static_url_path='', static_folder='workly/static', template_folder='workly/templates')
 
 #configure session
 app.config['SECRET_KEY'] = environ.get("SECRET")
@@ -21,19 +22,16 @@ app.config.update(dict(
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
     MAIL_SUPPRESS_SEND = False,
-    MAIL_USERNAME = environ.get("EMAIL"),
-    MAIL_PASSWORD = environ.get("PASSWORD"),
-    MAIL_DEFAULT_SENDER = ('Workly', environ.get("EMAIL"))
+    MAIL_USERNAME = Config.email[0],
+    MAIL_PASSWORD = Config.password[0],
+    MAIL_DEFAULT_SENDER = ('Workly', Config.email[0])
 ))
 mail = Mail(app)
-
-print(environ)
 
 #configure data base
 db = sqlite3.connect('workly.db', check_same_thread=False)
 cursor = db.cursor()
 
-print(environ.get('EMAIL'))
 #functions
 def login_required(f):
     @wraps(f)
@@ -86,7 +84,7 @@ def login():
                     session.permanent = True
                 
                 session["admin"] = (data[0][4])
-                session["user_id"] = (data[0][0])           
+                session["user_id"] = (data[0][0])        
                 flash('Sucessfully logged in', category='success')
                 return redirect("/")
             
@@ -443,6 +441,7 @@ def resetemail():
 
 #change employer
 @app.route("/change/employer", methods=["GET", "POST"])
+@login_required
 def changeemployer():
     
     if request.method == "POST":
