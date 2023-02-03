@@ -467,7 +467,7 @@ def changeemployer():
 def report():
     if request.method == "POST":
 
-        msg = Message('Bug report', recipients = ['environ.get("EMAIL")'])
+        msg = Message('Bug report', recipients = [Config.email[0]])
         msg.body = request.form.get("description")
         mail.send(msg)
 
