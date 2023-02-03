@@ -1,9 +1,9 @@
-{% if admin >= 0 %}
+{% if admin == None and logged != 0 %}
+  {% extends "template.html" %}
+{% elif admin >= 0 %}
   {% extends "templateadmin.html" %}
 {% elif logged == None %}
   {% extends "templatelogin.html" %}
-{% elif logged >= 0 %}
-  {% extends "template.html" %}
 {% endif %}
 
 {% block head %}

@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.13.1/datatables.min.css"/>
     
-    <link rel="icon" href="/static/logo_small.ico">
-    <link rel="stylesheet" href="/static/stylesheet.css">
+    <link rel="icon" href="{{ url_for('static', filename='logo_small.ico')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css')}}">
 
     <title>Workly</title>
     {% block head %}
@@ -54,7 +54,7 @@
                 </button>
             </div>
             <a class="navbar-brand text-center" href="{{ url_for('index') }}">
-                <img src="/static/logo_large.png" alt="Bootstrap" width="150" height="40">
+                <img src="{{ url_for('static', filename='logo_large.png')}}" alt="Bootstrap" width="150" height="40">
             </a>
             <span class="w-100"></span>
         </div>
