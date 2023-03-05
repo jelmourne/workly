@@ -145,7 +145,7 @@ def register():
                 return redirect("/register")
 
         elif request.method == "GET": 
-            employer = cursor.execute("SELECT id, name FROM users WHERE admin >='1'").fetchall()
+            employer = cursor.execute("SELECT admin, name FROM users WHERE admin > '0'").fetchall()
             return render_template("register.html", employer=employer)
     else:
         session.clear()
@@ -178,10 +178,10 @@ def start():
             return redirect("/start")
 
         else:
-            user_data = cursor.execute("SELECT id,name FROM users WHERE id=?", str(session.get("user_id"))).fetchall()
+            user_data = cursor.execute("SELECT id,name,employ FROM users WHERE id=?", str(session.get("user_id"))).fetchall()
 
-            cursor.execute("INSERT INTO hours (user_id,name,location,date,start) VALUES (?,?,?,?,?)",
-            (user_data[0][0],user_data[0][1],str(request.form.get("location"))[:15],request.form.get("date"),request.form.get("time")))
+            cursor.execute("INSERT INTO hours (user_id,name,location,date,start,employ) VALUES (?,?,?,?,?,?)",
+            (user_data[0][0],user_data[0][1],str(request.form.get("location"))[:15],request.form.get("date"),request.form.get("time"),user_data[0][2]))
             db.commit()
 
             flash('Successfully started shift', category='success')
@@ -198,8 +198,6 @@ def start():
 def end():
 
     if request.method == "POST":
-
-        print(request.form.get("description"))
 
         data = cursor.execute("SELECT * FROM hours WHERE user_id=? and end IS NULL",str(session.get("user_id"))).fetchall()
 
@@ -287,7 +285,6 @@ def breaks():
 def details():
     
     #check if admin
-    print(session.get("admin"))
     if session.get("admin") is None:
         hours = cursor.execute("SELECT * FROM hours WHERE user_id=?", str(session.get("user_id"))).fetchall()
         return render_template("detail.html", hours=hours)
@@ -297,7 +294,7 @@ def details():
         return render_template("detailadmin.html", hours=hours)
     
     elif session.get("admin") > 0:
-        hours = cursor.execute("SELECT * FROM hours INNER JOIN users ON users.id=hours.user_id WHERE users.employ=? or users.id=?", 
+        hours = cursor.execute("SELECT * FROM hours WHERE employ=? or user_id=?", 
         [session.get("admin"),session.get("user_id")]).fetchall()
         return render_template("detailadmin.html", hours=hours)
 
