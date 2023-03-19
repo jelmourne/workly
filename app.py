@@ -455,7 +455,7 @@ def changeemployer():
         return redirect("/")
     
     elif request.method == "GET":
-        employer = cursor.execute("SELECT id, name FROM users WHERE admin >='1'").fetchall()
+        employer = cursor.execute("SELECT admin, name FROM users WHERE admin >='1'").fetchall()
         return render_template("employer.html",  admin=session.get("admin"), employer=employer)
 
 #report bug
